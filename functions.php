@@ -322,7 +322,7 @@ add_action( 'init', 'fwd_block_editor_templates' );
 
 // For pages Home, Careers, Test_ACF; change the Block Editor to classic editor (with an eye on removing the editor entirely)
 function fwd_post_filter( $use_block_editor, $post ) {
-    $page_ids = array( 7, 113 );
+    $page_ids = array( 7, 113, 223 );
     if ( in_array( $post->ID, $page_ids ) ) {
         return false;
     } else {
@@ -332,7 +332,7 @@ function fwd_post_filter( $use_block_editor, $post ) {
 add_filter( 'use_block_editor_for_post', 'fwd_post_filter', 10, 2 );
 
 // Eliminate "Archive" on the Work archive
-function fwd_archive_title_prefix( $prefix ){
+function fwd_archive_title_prefix( $prefix ) {
     if ( get_post_type() === 'fwd-work' ) {
         return false;
     } else {
@@ -340,3 +340,23 @@ function fwd_archive_title_prefix( $prefix ){
     }
 }
 add_filter( 'get_the_archive_title_prefix', 'fwd_archive_title_prefix' );
+
+// Change generic "Add Title" for a new Work (CPT) to "Add works title"
+// Change generic "Add Title" for a new Service (CPT) to "Add service name"
+// Change generic "Add Title" for a new Career (CPT) to "Add career title"
+// Change generic "Add Title" for a new Testimonial (CPT) to "Add testimonial name"
+function fwd_change_title_text( $title ) {
+    $screen = get_current_screen();
+  
+    switch ( $screen->post_type ) {
+        case 'fwd-work': $title = 'Add works title'; break;
+        case 'fwd-service': $title = 'Add service name'; break;
+        case 'fwd-career': $title = 'Add career title'; break;
+        case 'fwd-testimonial': $title = 'Add testimonial name'; break;
+        default: // make no changes otherwise
+            break;
+    }
+
+    return $title;
+}
+add_filter( 'enter_title_here', 'fwd_change_title_text' );

@@ -42,10 +42,12 @@ get_header();
                     
                     if ( $query -> have_posts() ) {
 
+                        echo '<ul>';
                         while ( $query -> have_posts() ) {
                             $query -> the_post();
-                            echo '<a href="#'. esc_attr( get_the_ID() ) .'">'. esc_html( get_the_title() ) .'</a>';
+                            echo '<li><a href="#'. esc_attr( get_the_ID() ) .'">'. esc_html( get_the_title() ) .'</a></li>';
                         }
+                        echo '</ul>';
                         wp_reset_postdata();
                     }
 
@@ -75,10 +77,8 @@ get_header();
                         if ( $query->have_posts() ) {
                             while( $query->have_posts() ) {
                                 $query->the_post();
-                                echo "<p>"
-                                    . "<h2>" . esc_html__( get_the_title() ) . "</h2>"
-                                    .  esc_html__( get_field('service_description') )
-                                    . "</p>";
+                                echo "<h2 id='" . esc_attr( get_the_ID() ) . "'>" . esc_html__( get_the_title() ) . "</h2>"
+                                    .  get_field('service_description');
                             }
                             wp_reset_postdata();
                         }                        
