@@ -90,3 +90,12 @@ package-lock.json
 *.swp
 *.vi
 *~
+
+# Misc Files & Folders #
+#####################
+
+js/swiper-bundle.min.js
+js/swiper-bundle.min.js.map
+js/swiper-settings.js
+css/swiper-bundle.css
+images/

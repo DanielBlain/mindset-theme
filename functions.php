@@ -4,7 +4,7 @@
  *
  * @link https://developer.wordpress.org/themes/basics/theme-functions/
  *
- * @package FWD_Starter_Theme
+ * @package Mindset_Theme
  */
 
 if ( ! defined( '_S_VERSION' ) ) {
@@ -46,10 +46,18 @@ function fwd_setup() {
 		*/
 	add_theme_support( 'post-thumbnails' );
 
+    // Custom crop size: Portrait Blog Size - 200px width, 250px height, hard crop
+    add_image_size( 'portrait-blog', 200, 250, true );
+
+    // Custom crop size: Latest Blog Size - 400px width, 200px height, hard crop
+    add_image_size( 'latest-blog', 400, 200, true );
+
 	// This theme uses wp_nav_menu() in one location.
 	register_nav_menus(
 		array(
 			'header' => esc_html__( 'Header Menu Location', 'fwd' ),
+            'footer-left' => esc_html__( 'Footer - Left Side', 'fwd' ),
+            'footer-right' => esc_html__( 'Footer - Right Side', 'fwd' ),
 		)
 	);
 
@@ -136,8 +144,19 @@ add_action( 'after_setup_theme', 'fwd_content_width', 0 );
 function fwd_widgets_init() {
 	register_sidebar(
 		array(
-			'name'          => esc_html__( 'Sidebar', 'fwd' ),
+			'name'          => esc_html__( 'Primary Sidebar', 'fwd' ),
 			'id'            => 'sidebar-1',
+			'description'   => esc_html__( 'Add widgets here.', 'fwd' ),
+			'before_widget' => '<section id="%1$s" class="widget %2$s">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title">',
+			'after_title'   => '</h2>',
+		)
+	);
+    register_sidebar(
+		array(
+			'name'          => esc_html__( 'Secondary Sidebar', 'fwd' ),
+			'id'            => 'sidebar-2',
 			'description'   => esc_html__( 'Add widgets here.', 'fwd' ),
 			'before_widget' => '<section id="%1$s" class="widget %2$s">',
 			'after_widget'  => '</section>',
@@ -152,10 +171,45 @@ add_action( 'widgets_init', 'fwd_widgets_init' );
  * Enqueue scripts and styles.
  */
 function fwd_scripts() {
+    wp_enqueue_style(
+        'fwd-googlefonts', // unique handle
+        'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap', // handle to css file
+        array(), // dependencies (or lack thereof)
+        null, // Ideally a version number, but due to compatibility issues between Google Fonts/WordPress, use null here
+        'all' // Default media query type
+    );
+
 	wp_enqueue_style( 'fwd-style', get_stylesheet_uri(), array(), _S_VERSION );
 	wp_style_add_data( 'fwd-style', 'rtl', 'replace' );
 
+    wp_enqueue_script( 'fwd-scroll-top', get_template_directory_uri() . '/js/scroll-top.js', array(), _S_VERSION, true );
+
 	wp_enqueue_script( 'fwd-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
+
+    if ( is_front_page() ) {
+        wp_enqueue_style(
+            'swiper-styles',
+            get_template_directory_uri() . '/css/swiper-bundle.css',
+            array(),
+            '10.2.0'
+        );
+
+        wp_enqueue_script(
+            'swiper-scripts',
+            get_template_directory_uri() . '/js/swiper-bundle.min.js',
+            array(),
+            '10.2.0',
+            array( 'strategy' => 'defer' )
+        );
+
+        wp_enqueue_script(
+            'swiper-settings',
+            get_template_directory_uri() . '/js/swiper-settings.js',
+            array( 'swiper-scripts' ),
+            _S_VERSION,
+            array( 'strategy' => 'defer' )
+        );
+    }
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
@@ -179,8 +233,110 @@ require get_template_directory() . '/inc/template-functions.php';
 require get_template_directory() . '/inc/customizer.php';
 
 /**
+ * Register CPTs and Taxonomies
+ */
+require get_template_directory() . '/inc/cpt-taxonomy.php';
+
+/**
  * Load Jetpack compatibility file.
  */
 if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
+
+// Add Theme Color Meta Tag
+function fwd_theme_color() {
+    echo '<meta name="theme-color" content="#fff200">';
+}
+add_action('wp_head', 'fwd_theme_color');
+
+// Change the Excerpt Length from 55 to 20
+function fwd_excerpt_length( $length ) {
+    return 20;
+}
+add_filter( 'excerpt_length', 'fwd_excerpt_length', 999 );
+
+// Modify the ellipses [..] at the end of each excerpt
+function fwd_excerpt_more( $more ) {
+    $more = '... <a class="read-more" href="' . esc_url( get_permalink() ) . '">Continue Reading</a>';
+    return $more;
+}
+add_filter( 'excerpt_more', 'fwd_excerpt_more' );
+
+// Create Block Templates
+function fwd_block_editor_templates() {
+    // For Test-Blocks
+    if ( isset( $_GET['post'] ) && '97' == $_GET['post'] ) {
+        $post_type_object = get_post_type_object( 'page' );
+        $post_type_object->template = array(
+            array( 
+                'core/paragraph', 
+                array( 
+                    'placeholder' => 'Add your introduction here...'
+                ) 
+            ),
+            array( 
+                'core/heading', 
+                array( 
+                    'placeholder' => 'Add your heading here...',
+                    'level' => 2
+                ) 
+            ),
+            array( 
+                'core/image', 
+                array( 
+                    'align' => 'left', 
+                    'sizeSlug' => 'medium' 
+                )
+            ),
+            array( 
+                'core/paragraph', 
+                array( 
+                    'placeholder' => 'Add text here...'
+                ) 
+            ),
+        );
+        $post_type_object->template_lock = 'all';
+    }
+    // For page-contact
+    if ( isset( $_GET['post'] ) && '18' == $_GET['post'] ) {
+        $post_type_object = get_post_type_object( 'page' );
+        $post_type_object->template = array(
+            array( 
+                'core/paragraph', 
+                array( 
+                    'placeholder' => 'Add your introduction here...'
+                ) 
+            ),
+            array( 
+                'core/shortcode', 
+                array( 
+                    'placeholder' => 'Add your shortcode here...'
+                ) 
+            ),
+        );
+        $post_type_object->template_lock = 'all';
+    }    
+}
+add_action( 'init', 'fwd_block_editor_templates' );
+
+// For pages Home, Careers, Test_ACF; change the Block Editor to classic editor (with an eye on removing the editor entirely)
+function fwd_post_filter( $use_block_editor, $post ) {
+    $page_ids = array( 7, 113 );
+    if ( in_array( $post->ID, $page_ids ) ) {
+        return false;
+    } else {
+        return $use_block_editor;
+    }
+}
+add_filter( 'use_block_editor_for_post', 'fwd_post_filter', 10, 2 );
+
+// Eliminate "Archive" on the Work archive
+function fwd_archive_title_prefix( $prefix ){
+    if ( get_post_type() === 'fwd-work' ) {
+        return false;
+    } else {
+        return $prefix;
+    }
+}
+add_filter( 'get_the_archive_title_prefix', 'fwd_archive_title_prefix' );

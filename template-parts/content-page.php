@@ -4,7 +4,7 @@
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
- * @package FWD_Starter_Theme
+ * @package Mindset_Theme
  */
 
 ?>
@@ -13,8 +13,6 @@
 	<header class="entry-header">
 		<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
 	</header><!-- .entry-header -->
-
-	<?php fwd_post_thumbnail(); ?>
 
 	<div class="entry-content">
 		<?php
@@ -26,7 +24,22 @@
 				'after'  => '</div>',
 			)
 		);
-		?>
+
+        if ( function_exists ( 'get_field' ) ) {
+    
+            if ( get_field( 'address' ) ) {
+                esc_html( the_field( 'address' ), 'fwd' );
+            }
+    
+            if ( get_field( 'email' ) ) {
+                $email = get_field( 'email' );
+                $mailto = 'mailto:' . $email;
+                ?>
+                <p><a href="<?php echo esc_url( $mailto ); ?> "><?php echo esc_html( $email ); ?></a></p>
+                <?php
+            }
+        } 
+        ?>
 	</div><!-- .entry-content -->
 
 	<footer class="entry-footer">

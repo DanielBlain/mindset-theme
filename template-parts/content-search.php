@@ -4,7 +4,7 @@
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
- * @package FWD_Starter_Theme
+ * @package Mindset_Theme
  */
 
 ?>
