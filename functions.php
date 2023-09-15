@@ -173,7 +173,7 @@ add_action( 'widgets_init', 'fwd_widgets_init' );
 function fwd_scripts() {
     wp_enqueue_style(
         'fwd-googlefonts', // unique handle
-        'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap', // handle to css file
+        'https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;700&family=Open+Sans:wght@400;700&display=swap', // link to google fonts
         array(), // dependencies (or lack thereof)
         null, // Ideally a version number, but due to compatibility issues between Google Fonts/WordPress, use null here
         'all' // Default media query type

@@ -42,7 +42,7 @@ get_header();
                     
                     if ( $query -> have_posts() ) {
 
-                        echo '<ul>';
+                        echo '<ul class="services-tabs">';
                         while ( $query -> have_posts() ) {
                             $query -> the_post();
                             echo '<li><a href="#'. esc_attr( get_the_ID() ) .'">'. esc_html( get_the_title() ) .'</a></li>';
