@@ -28,16 +28,21 @@
 	<header id="masthead" class="site-header">
 		<div class="site-branding">
 			<?php
+            if ( function_exists( 'the_custom_logo' ) ) {
+                the_custom_logo();
+            }
+            
 			if ( is_front_page() && is_home() ) :
-                if ( function_exists( 'the_custom_logo' ) ) {
-                    the_custom_logo();
-                }
                 ?>
-				<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+				<span class="site-title">
+                    <a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a>
+                </span>
 				<?php
 			else :
 				?>
-				<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
+                <span class="site-title">
+                    <a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a>
+                </span>
 				<?php
 			endif;
 			$fwd_description = get_bloginfo( 'description', 'display' );

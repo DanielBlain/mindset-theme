@@ -987,6 +987,19 @@ svg path {
 	grid-gap: 2em;
 }
 
+/* Remove sidebar gap on About page and Work Single pages */
+.page-id-15 .site,
+.fwd-work-template-default .site .site-main
+{
+    grid-column: 2 / span 2;
+}
+
+.post-thumbnail img {
+    display: block;
+    margin-left: auto;
+	margin-right: auto;
+}
+
 /* Front Page (id 7)
 --------------------------------------------- */
 

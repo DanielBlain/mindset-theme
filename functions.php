@@ -46,6 +46,9 @@ function fwd_setup() {
 		*/
 	add_theme_support( 'post-thumbnails' );
 
+    // Custom image size: Mast logo - 60px by 60px, scale
+    add_image_size( 'mast-logo-size', 60, 60, false );
+
     // Custom crop size: Portrait Blog Size - 200px width, 250px height, hard crop
     add_image_size( 'portrait-blog', 200, 250, true );
 
@@ -95,22 +98,6 @@ function fwd_setup() {
 	add_theme_support( 'customize-selective-refresh-widgets' );
 
 	/**
-	 * Add support for core custom logo.
-	 *
-	 * @link https://codex.wordpress.org/Theme_Logo
-	 */
-	add_theme_support(
-		'custom-logo',
-		array(
-			'height'      => 60,
-			'width'       => 60,
-			'flex-width'  => true,
-			'flex-height' => true,
-			// 'unlink-homepage-logo' 	=> true,
-		)
-	);
-
-	/**
 	 * Add support for Block Editor features.
 	 *
 	 * @link https://developer.wordpress.org/block-editor/developers/themes/theme-support/
@@ -118,6 +105,18 @@ function fwd_setup() {
 	add_theme_support( 'wp-block-styles' );
 	add_theme_support( 'responsive-embeds' );
 	// add_theme_support( 'align-wide' );
+
+    /**
+     * Add support for core custom logo.
+     *
+     * @link https://codex.wordpress.org/Theme_Logo
+     */
+    $defaults = array(
+        'height'               => 10,
+        'width'                => 10,
+    );
+    add_theme_support( 'custom-logo', $defaults );
+    
 }
 add_action( 'after_setup_theme', 'fwd_setup' );
 
