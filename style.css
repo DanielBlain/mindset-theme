@@ -982,6 +982,33 @@ svg path {
 	grid-gap: 2em;
 }
 
+/* Front Page (id 7)
+--------------------------------------------- */
+
+@media screen and (min-width: 50em) {
+
+    .home-work article {
+        display: inline-block;
+        max-width: 44%;
+        margin: 0 2%;
+        margin-bottom: 4rem;
+        text-align: center;
+    }
+
+    .home-left,
+    .home-right {
+        margin: 2em 0;
+    }
+
+    .home-left,
+    .home-right,
+    .home-blog-list article {
+        display: inline-block;
+        width: 48%;
+    }
+
+}
+
 /* About Page (id 15)
 --------------------------------------------- */
 
@@ -1000,6 +1027,7 @@ svg path {
     padding: 0;
     margin: 0;
     display: flex;
+    flex-wrap: wrap;
     background-color: #f0f0f0; /* Background color for the tab bar */
 }
 

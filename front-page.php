@@ -80,7 +80,7 @@ get_header();
                 }
             ?>
             </section>
-            <section class="home-right"></section>
+            <section class="home-right">
             <?php
                 if ( function_exists( 'get_field' ) ) {
 
@@ -93,7 +93,8 @@ get_header();
                     }
 
                 }
-            ?>            
+            ?>
+            </section>
             <section class="home-slider">
                 <?php
                 $args = array(
@@ -113,8 +114,6 @@ get_header();
                             <?php endwhile; ?>
                         </div>
                         <div class="swiper-pagination"></div>
-                        <div class="swiper-button-prev"></div>
-                        <div class="swiper-button-next"></div>
                     </div>
                     <?php
                     wp_reset_postdata();
@@ -123,36 +122,38 @@ get_header();
             </section>
             <section class="home-blog">
                 <h2><?php esc_html_e( 'Latest Blog Posts', 'fwd' ); ?></h2>
-                <?php
-                    $args = array( 
-                         // Two main post types: 'post' and 'page'. Choose 'posts' specifically
-                        'post_type'      => 'post', // Default is post; we're putting here explicitly just for clarity
-                        'posts_per_page' => 4 
-                        // By default: most recent posts
-                    );
+                <div class="home-blog-list">
+                    <?php
+                        $args = array( 
+                            // Two main post types: 'post' and 'page'. Choose 'posts' specifically
+                            'post_type'      => 'post', // Default is post; we're putting here explicitly just for clarity
+                            'posts_per_page' => 4 
+                            // By default: most recent posts
+                        );
 
-                    $blog_query = new WP_Query( $args );
+                        $blog_query = new WP_Query( $args );
 
-                    if ( $blog_query -> have_posts() ) {
-                        while ( $blog_query -> have_posts() ) {
-                            $blog_query -> the_post();
-                            ?>
-                            <article>
-                                <a href="<?php the_permalink(); ?>">
-                                    <h3><?php the_title(); ?></h3>
-                                    <p><?php fwd_posted_on(); ?></p>
-                                    <?php
-                                        if ( has_post_thumbnail() ) {
-                                            the_post_thumbnail( 'latest-blog' );
-                                        }
-                                    ?>
-                                </a>
-                            </article>
-                            <?php
+                        if ( $blog_query -> have_posts() ) {
+                            while ( $blog_query -> have_posts() ) {
+                                $blog_query -> the_post();
+                                ?>
+                                <article>
+                                    <a href="<?php the_permalink(); ?>">
+                                        <h3><?php the_title(); ?></h3>
+                                        <p><?php fwd_posted_on(); ?></p>
+                                        <?php
+                                            if ( has_post_thumbnail() ) {
+                                                the_post_thumbnail( 'latest-blog' );
+                                            }
+                                        ?>
+                                    </a>
+                                </article>
+                                <?php
+                            }
+                            wp_reset_postdata();
                         }
-                        wp_reset_postdata();
-                    }
-                ?>
+                    ?>
+                </div>
             </section>
 
         <?php endwhile; ?>
