@@ -702,6 +702,11 @@ svg path {
 	padding: 3rem 1rem 1rem;
 }
 
+/* To give the "Recent Posts" more room, otherwise they look crammed */
+.wp-block-latest-posts li {
+    margin-bottom: 1rem;
+}
+
 @media screen and (min-width: 50em) {
 	.site {
 		max-width: 2200px;
@@ -1008,6 +1013,22 @@ svg path {
     }
 
 }
+
+/* Works Page (id ?)
+--------------------------------------------- */
+
+@media screen and (min-width: 50em) {
+
+    .works-panel article {
+        display: inline-block;
+        max-width: 28%;
+        margin: 0 1%;
+        margin-bottom: 4rem;
+        text-align: center;
+    }
+
+}
+
 
 /* About Page (id 15)
 --------------------------------------------- */

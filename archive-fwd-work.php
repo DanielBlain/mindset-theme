@@ -35,7 +35,7 @@ get_header();
         $query = new WP_Query( $args );
 
         if ( $query->have_posts() ) {
-            echo '<section><h2>' . esc_html__('Web') . '</h2>';
+            echo '<section class="works-panel"><h2>' . esc_html__('Web') . '</h2>';
             while( $query->have_posts() ) {
                 $query->the_post(); 
                 ?>
@@ -67,7 +67,7 @@ get_header();
         $query = new WP_Query( $args );
 
         if ( $query->have_posts() ) {
-            echo '<section><h2>' . esc_html__('Photo') . '</h2>';
+            echo '<section class="works-panel"><h2>' . esc_html__('Photo') . '</h2>';
             while( $query->have_posts() ) {
                 $query->the_post(); 
                 ?>
